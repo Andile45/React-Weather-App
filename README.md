@@ -70,7 +70,7 @@ Build for production
 
 npm run build
 
-✅ Evaluation Criteria (Mapped to Task)
+✅ Evaluation Criteria 
 
 User-friendly, intuitive interface
 
