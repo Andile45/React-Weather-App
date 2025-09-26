@@ -1,73 +1,99 @@
-# React + TypeScript + Vite
+# 🌦️ Weather Application (React + TypeScript + CSS)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Overview
+This is a **React TypeScript Weather Application** built as part of Lesson 4  
+The app allows users to check real-time weather conditions for their **current location** as well as **searched locations**. Locations are persisted so users don’t have to re-search them.  
 
-Currently, two official plugins are available:
+The application consumes data from a **third-party Weather API** and provides features like daily/hourly forecasts, multiple location support, dark mode, unit customization (Celsius/Fahrenheit), and offline caching.  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Features
+- **Real-time Weather Info**
+  - Current temperature, humidity, wind speed
+  - Hourly and daily forecasts
+- **Location-Based Forecasting**
+  - Auto-detect current location (with permission)
+  - Search weather for any city
+  - Save multiple locations
+- **Customization**
+  - Light/Dark theme toggle
+  - Switch between °C and °F
+- **Performance**
+  - Optimized for fast loading and smooth UI
+- **Responsiveness**
+  - Fully responsive design (320px → 1200px+)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🖼️ Screenshots
+> _Add screenshots or demo GIFs here once available_
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🛠️ Tech Stack
+- **Frontend:** React 18, TypeScript,  CSS
+- **State Management:** React Hooks (`useState`, `useEffect`)
+- **Storage:** LocalStorage (persist saved locations & settings)
+- **API:** OpenWeatherMap 
+- **Build Tool:** Vite / Create React App (depending on setup)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
+⚙️ Installation & Setup
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Clone the repo
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+git clone https://github.com/your-username/weather-app.git
+cd weather-app
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Install dependencies
+
+npm install
+
+
+Set up environment variables
+
+Create a .env file in the root directory:
+
+VITE_WEATHER_API_KEY=your_api_key_here
+
+
+Get a free API key from OpenWeatherMap
+
+Run the app
+
+npm run dev
+
+
+Build for production
+
+npm run build
+
+✅ Evaluation Criteria (Mapped to Task)
+
+User-friendly, intuitive interface
+
+Displays weather conditions (Temp, Humidity, Wind)
+
+Location auto-detection + search
+
+Supports theme toggle + unit conversion
+
+Hourly and daily forecasts
+
+Push notifications for severe weather
+
+Responsive at common breakpoints (320px → 1200px)
+
+Clean ReactTS code with reusable components, props, and state management
+
+Code quality: camelCase, self-explanatory variables, modular functions, comments
+
+🔒 Privacy & Security
+
+User location data is only used for fetching weather information.
+
+No personal data is stored or shared with third parties.
+
+Weather data is cached locally for offline access.
