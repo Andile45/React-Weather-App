@@ -10,6 +10,7 @@ import cloudIcon from './assets/cloud.png'
 import rainIcon from './assets/rain.png'
 import snowIcon from './assets/snow.png'
 import mistIcon from './assets/mist.png'
+import notFoundIcon from './assets/404.png'
 
 // Declare the geolocationTimeout property on window
 declare global {
@@ -248,6 +249,9 @@ function App() {
       );
       
       if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error('Location not found');
+        }
         throw new Error('Weather data not available');
       }
       
@@ -286,7 +290,10 @@ function App() {
       );
       
       if (!response.ok) {
-        throw new Error('City not found');
+        if (response.status === 404) {
+          throw new Error('City not found');
+        }
+        throw new Error('Weather data not available');
       }
       
       const data = await response.json();
@@ -357,6 +364,14 @@ function App() {
         
         {error && (
           <div className="error-message">
+            {(error.includes('City not found') || error.includes('Location not found')) && (
+              <img 
+                src={notFoundIcon} 
+                alt="Location not found" 
+                className="error-icon" 
+                style={{ width: '64px', height: '64px', marginBottom: '10px', display: 'block', margin: '0 auto 10px auto' }}
+              />
+            )}
             <p>{error}</p>
             <button onClick={() => setError(null)}>Dismiss</button>
           </div>
