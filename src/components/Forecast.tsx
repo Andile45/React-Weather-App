@@ -6,6 +6,7 @@ import cloudIcon from '../assets/cloud.png';
 import rainIcon from '../assets/rain.png';
 import snowIcon from '../assets/snow.png';
 import mistIcon from '../assets/mist.png';
+import notFoundIcon from '../assets/404.png';
 
 interface ForecastProps {
   lat: number;
@@ -50,6 +51,9 @@ const Forecast: React.FC<ForecastProps> = ({ lat, lon, units, viewMode, apiKey, 
         const response = await fetch(endpoint);
         
         if (!response.ok) {
+          if (response.status === 404) {
+            throw new Error('Location not found');
+          }
           throw new Error('Forecast data not available');
         }
         
@@ -112,7 +116,19 @@ const Forecast: React.FC<ForecastProps> = ({ lat, lon, units, viewMode, apiKey, 
   }
 
   if (error) {
-    return <div className="error">{error}</div>;
+    return (
+      <div className="error">
+        {error.includes('Location not found') && (
+          <img 
+            src={notFoundIcon} 
+            alt="Location not found" 
+            className="error-icon" 
+            style={{ width: '64px', height: '64px', marginBottom: '10px' }}
+          />
+        )}
+        <div>{error}</div>
+      </div>
+    );
   }
 
   return (
