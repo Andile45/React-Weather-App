@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import backgroundImage from './assets/background.jpg'
 import Forecast from './components/Forecast'
+import DarkMode from './assets/dark-mode.png'
+import LightMode from './assets/light-mode.png'
 
 
 // Weather condition images
@@ -96,10 +98,10 @@ function App() {
 
   // Improved function to handle geolocation with better error handling
   const requestLocation = () => {
-    console.log("🔍 Starting geolocation request...");
-    console.log("🌐 Current URL:", window.location.href);
-    console.log("🔒 Is HTTPS:", window.location.protocol === 'https:');
-    console.log("📱 User Agent:", navigator.userAgent);
+    console.log("Starting geolocation request...");
+    console.log("Current URL:", window.location.href);
+    console.log("Is HTTPS:", window.location.protocol === 'https:');
+    console.log("User Agent:", navigator.userAgent);
     
     if (!navigator.geolocation) {
       console.error(" Geolocation not supported by browser");
@@ -131,16 +133,16 @@ function App() {
       clearTimeout(window.geolocationTimeout);
     }
     
-    console.log("⏰ Setting 10-second timeout for geolocation request");
+    console.log("Setting 10-second timeout for geolocation request");
     
     // Set a timeout in case geolocation takes too long
     window.geolocationTimeout = setTimeout(() => {
-      console.error("⏱️ Location request timed out after 10 seconds");
+      console.error("⏱ Location request timed out after 10 seconds");
       setError("Location request timed out. This might be due to:\n• Slow GPS signal\n• Browser security restrictions\n• Network issues\n\nPlease try searching for a city manually or click 'Get My Location' to try again.");
       setLoading(false);
     }, 10000); // Reduced timeout to 10 seconds for better UX
     
-    console.log("📍 Calling navigator.geolocation.getCurrentPosition...");
+    console.log("Calling navigator.geolocation.getCurrentPosition...");
     
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -149,7 +151,7 @@ function App() {
           clearTimeout(window.geolocationTimeout);
         }
         const { latitude, longitude } = position.coords;
-        console.log("📍 Got coordinates:", { latitude, longitude, accuracy: position.coords.accuracy });
+        console.log("Got coordinates:", { latitude, longitude, accuracy: position.coords.accuracy });
         
         // Save permission granted status
         localStorage.setItem('locationPermissionGranted', 'true');
@@ -351,32 +353,39 @@ function App() {
   };
 
   return (
-    <div className={`app ${theme}`} style={{ backgroundImage: `url(${backgroundImage})` }}>
+    <div
+      className={`app ${theme}`}
+      style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
       <div className="container">
         <h1 className="app-title">Weather App</h1>
-        
         {loading && (
           <div className="loading-overlay">
             <div className="loading-spinner"></div>
             <p>Loading weather data...</p>
           </div>
         )}
-        
         {error && (
           <div className="error-message">
-            {(error.includes('City not found') || error.includes('Location not found')) && (
-              <img 
-                src={notFoundIcon} 
-                alt="Location not found" 
-                className="error-icon" 
-                style={{ width: '64px', height: '64px', marginBottom: '10px', display: 'block', margin: '0 auto 10px auto' }}
+            {(error.includes("City not found") ||
+              error.includes("Location not found")) && (
+              <img
+                src={notFoundIcon}
+                alt="Location not found"
+                className="error-icon"
+                style={{
+                  width: "64px",
+                  height: "64px",
+                  marginBottom: "10px",
+                  display: "block",
+                  margin: "0 auto 10px auto",
+                }}
               />
             )}
             <p>{error}</p>
             <button onClick={() => setError(null)}>Dismiss</button>
           </div>
         )}
-        
         {/* Search Form */}
         <div className="search-container">
           <form onSubmit={handleSubmit}>
@@ -387,34 +396,47 @@ function App() {
               onChange={(e) => setCity(e.target.value)}
               className="search-input"
             />
-            <button type="submit" className="search-button" disabled={loading}>Search</button>
+            <button type="submit" className="search-button" disabled={loading}>
+              Search
+            </button>
           </form>
-          
-          {/* Manual location request button */}
-          <div className="location-controls">
-            <button 
-              onClick={requestLocation} 
-              className="location-button"
-              disabled={loading}
-              title="Get weather for your current location"
-            >
-              📍 Get My Location
+  
+            {/* Manual location request button */}
+            <div className="location-controls">
+              <button
+                onClick={requestLocation}
+                className="location-button"
+                disabled={loading}
+                title="Get weather for your current location"
+              >
+                Get My Location
+              </button>
+            </div>
+          </div>
+          {/* Location detection happens automatically */}
+          {/* Settings */}
+          <div className="settings">
+            <button onClick={toggleUnits} className="settings-button">
+              {units === "metric" ? "°C" : "°F"}
+            </button>
+
+            <button onClick={toggleTheme} className="settings-button">
+              <img
+                src={theme === "light" ? DarkMode : LightMode}
+                alt={
+                  theme === "light"
+                    ? "Switch to dark mode"
+                    : "Switch to light mode"
+                }
+                style={{
+                  width: "24px",
+                  height: "24px",
+                  verticalAlign: "middle",
+                }}
+              />
             </button>
           </div>
-        </div>
-        
-        {/* Location detection happens automatically */}
-        
-        {/* Settings */}
-        <div className="settings">
-          <button onClick={toggleUnits} className="settings-button">
-            {units === 'metric' ? '°C' : '°F'}
-          </button>
-          <button onClick={toggleTheme} className="settings-button">
-            {theme === 'light' ? '🌙' : '☀️'}
-          </button>
-        </div>
-        
+  
         {/* Saved Locations */}
         <div className="saved-locations">
           <h3>Saved Locations</h3>
@@ -430,34 +452,32 @@ function App() {
             ))}
           </div>
         </div>
-        
         {/* View Mode Toggle */}
         <div className="view-mode">
           <button
-            className={`view-button ${viewMode === 'daily' ? 'active' : ''}`}
-            onClick={() => setViewMode('daily')}
+            className={`view-button ${viewMode === "daily" ? "active" : ""}`}
+            onClick={() => setViewMode("daily")}
           >
             Daily
           </button>
           <button
-            className={`view-button ${viewMode === 'hourly' ? 'active' : ''}`}
-            onClick={() => setViewMode('hourly')}
+            className={`view-button ${viewMode === "hourly" ? "active" : ""}`}
+            onClick={() => setViewMode("hourly")}
           >
             Hourly
           </button>
         </div>
-        
         {/* Loading State */}
         {loading && <div className="loading">Loading weather data...</div>}
-        
         {/* Error Message */}
         {error && <div className="error">{error}</div>}
-        
         {/* Weather Display */}
         {weatherData && !loading && !error && (
           <div className="weather-display">
-            <h2>{weatherData.name}, {weatherData.sys.country}</h2>
-            
+            <h2>
+              {weatherData.name}, {weatherData.sys.country}
+            </h2>
+
             <div className="weather-main">
               <img
                 src={getWeatherIcon(weatherData.weather[0].main.toLowerCase())}
@@ -465,18 +485,20 @@ function App() {
                 className="weather-icon"
               />
               <div className="temperature">
-                {Math.round(weatherData.main.temp)}°{units === 'metric' ? 'C' : 'F'}
+                {Math.round(weatherData.main.temp)}°
+                {units === "metric" ? "C" : "F"}
               </div>
               <div className="weather-description">
                 {weatherData.weather[0].description}
               </div>
             </div>
-            
+
             <div className="weather-details">
               <div className="detail">
                 <span className="label">Feels Like:</span>
                 <span className="value">
-                  {Math.round(weatherData.main.feels_like)}°{units === 'metric' ? 'C' : 'F'}
+                  {Math.round(weatherData.main.feels_like)}°
+                  {units === "metric" ? "C" : "F"}
                 </span>
               </div>
               <div className="detail">
@@ -486,7 +508,8 @@ function App() {
               <div className="detail">
                 <span className="label">Wind:</span>
                 <span className="value">
-                  {Math.round(weatherData.wind.speed)} {units === 'metric' ? 'm/s' : 'mph'}
+                  {Math.round(weatherData.wind.speed)}{" "}
+                  {units === "metric" ? "m/s" : "mph"}
                 </span>
               </div>
               <div className="detail">
@@ -496,9 +519,8 @@ function App() {
             </div>
           </div>
         )}
-        
         {/* Forecast Section */}
-        <Forecast 
+        <Forecast
           lat={weatherData?.coord?.lat || 0}
           lon={weatherData?.coord?.lon || 0}
           units={units}
@@ -506,14 +528,13 @@ function App() {
           apiKey={API_KEY}
           theme={theme}
         />
-        
         {/* Weather Alerts */}
         <div className="weather-alerts">
           {/* This will be populated with actual weather alerts */}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default App
