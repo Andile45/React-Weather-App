@@ -3,30 +3,46 @@ import React from 'react';
 interface SavedLocationsProps {
   locations: string[];
   onSelectLocation: (location: string) => void;
+  onRemoveLocation?: (location: string) => void;
 }
 
-const SavedLocations: React.FC<SavedLocationsProps> = ({ locations, onSelectLocation }) => {
+const SavedLocations: React.FC<SavedLocationsProps> = ({ 
+  locations, 
+  onSelectLocation,
+  onRemoveLocation 
+}) => {
   if (locations.length === 0) {
-    return (
-      <div className="saved-locations">
-        <h3>Saved Locations</h3>
-        <p className="no-locations">No saved locations yet</p>
-      </div>
-    );
+    return null;
   }
+
+  const handleRemove = (e: React.MouseEvent, location: string) => {
+    e.stopPropagation();
+    if (onRemoveLocation) {
+      onRemoveLocation(location);
+    }
+  };
 
   return (
     <div className="saved-locations">
-      <h3>Saved Locations</h3>
       <div className="location-list">
         {locations.map((location, index) => (
-          <button
-            key={index}
-            onClick={() => onSelectLocation(location)}
-            className="location-button"
-          >
-            {location}
-          </button>
+          <div key={index} className="location-item">
+            <button
+              onClick={() => onSelectLocation(location)}
+              className="location-button"
+            >
+              {location}
+            </button>
+            {onRemoveLocation && (
+              <button
+                onClick={(e) => handleRemove(e, location)}
+                className="location-remove"
+                title="Remove location"
+              >
+                ×
+              </button>
+            )}
+          </div>
         ))}
       </div>
     </div>
